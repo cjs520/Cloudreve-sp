@@ -7,7 +7,7 @@ import pageHelper from '../../utils/page';
 const useStyles = makeStyles(() => ({
   icp: {
     padding: '8px 24px',
-    textAlign: 'right',
+    textAlign: 'center',
     width: '100vw',
     position: 'absolute',
     bottom: 0,
@@ -36,7 +36,7 @@ export const ICPFooter = () => {
     <div className={classes.icp}>
       {`备案号: `}
       <Link 
-        href="http://www.beian.gov.cn/portal/registerSystemInfo"
+        href="https://beian.miit.gov.cn"
         rel="noopener noreferrer"
         target="_blank"
       >
