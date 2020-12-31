@@ -21,7 +21,7 @@ jobs:
       - name: 安装go
         uses: actions/setup-go@v2-beta
         with:
-          go-version: '1.14'
+          go-version: '1.13'
       - run: go version
         
       - name: 安装node
@@ -67,7 +67,13 @@ jobs:
           export GOOS=linux
           go build -a -o ./bin/cloudreve_$VERSION_$GOOS_$GOARCH -ldflags " -X 'github.com/HFO4/cloudreve/pkg/conf.BackendVersion=$VERSION' -X 'github.com/HFO4/cloudreve/pkg/conf.LastCommit=$COMMIT_SHA'"
           
-    
+    #x86_amd64
+      - name: 编译windows_amd64
+        run: |
+          export GOARCH=amd64
+          export GOOS=windows
+          go build -a -o ./bin/cloudreve_$VERSION_$GOOS_$GOARCH -ldflags " -X 'github.com/HFO4/cloudreve/pkg/conf.BackendVersion=$VERSION' -X 'github.com/HFO4/cloudreve/pkg/conf.LastCommit=$COMMIT_SHA'"
+          
       - name: 打包二进制文件
         uses: actions/upload-artifact@master
         with:
