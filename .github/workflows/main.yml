@@ -46,6 +46,8 @@ jobs:
           sudo apt-get -y install gcc-mingw-w64-x86-64
           sudo apt-get -y install gcc-arm-linux-gnueabihf libc6-dev-armhf-cross
           sudo apt-get -y install gcc-aarch64-linux-gnu libc6-dev-arm64-cross
+          export COMMIT_SHA=$(git rev-parse --short HEAD)
+          export VERSION=$(git describe --tags)
           chmod +x ./build.sh
           ./build.sh -r b
       - name: Upload binary files (windows_amd64)
