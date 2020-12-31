@@ -53,10 +53,12 @@ jobs:
       - name: 嵌入静态资源
         run: |
           go get github.com/rakyll/statik
-          statik -src=./assets/build/  -include=*.html,*.js,*.json,*.css,*.png,*.svg,*.ico -f
+          ~/go/bin/statik -src=./assets/build/  -include=*.html,*.js,*.json,*.css,*.png,*.svg,*.ico -f
       
       - name: 设置编译环境
         run: |
+          sudo apt-get update
+          sudo apt-get -y install gcc-mingw-w64-x86-64
           export COMMIT_SHA=$(git rev-parse --short HEAD)
           export VERSION=$(git describe --tags)
           export CGO_ENABLED=1
