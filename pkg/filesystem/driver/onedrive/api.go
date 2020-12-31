@@ -6,11 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	model "github.com/HFO4/cloudreve/models"
-	"github.com/HFO4/cloudreve/pkg/cache"
-	"github.com/HFO4/cloudreve/pkg/filesystem/fsctx"
-	"github.com/HFO4/cloudreve/pkg/request"
-	"github.com/HFO4/cloudreve/pkg/util"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -19,6 +14,12 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	model "github.com/cloudreve/Cloudreve/v3/models"
+	"github.com/cloudreve/Cloudreve/v3/pkg/cache"
+	"github.com/cloudreve/Cloudreve/v3/pkg/filesystem/fsctx"
+	"github.com/cloudreve/Cloudreve/v3/pkg/request"
+	"github.com/cloudreve/Cloudreve/v3/pkg/util"
 )
 
 const (
@@ -60,7 +61,6 @@ func (client *Client) getRequestURL(api string) string {
 	base.Path = path.Join(base.Path, api)
 	return base.String()
 }
-
 //修复删除失败
 func (client *Client) getDeleteRequestURL(api string) string {
 	var Delete_URL string;
@@ -76,7 +76,6 @@ func (client *Client) getDeleteRequestURL(api string) string {
 	base.Path = path.Join(base.Path, api)
 	return base.String()
 }
-
 // ListChildren 根据路径列取子对象
 func (client *Client) ListChildren(ctx context.Context, path string) ([]FileInfo, error) {
 	var requestURL string
@@ -121,7 +120,7 @@ func (client *Client) Meta(ctx context.Context, id string, path string) (*FileIn
 		requestURL = client.getRequestURL("/drive/items/" + id)
 	} else {
 		dst := strings.TrimPrefix(path, "/")
-		requestURL = client.getRequestURL("drive/root:/" + dst)
+		requestURL = client.getRequestURL("/drive/root:/" + dst)
 	}
 
 	res, err := client.requestWithStr(ctx, "GET", requestURL+"?expand=thumbnails", "", 200)
@@ -151,7 +150,7 @@ func (client *Client) CreateUploadSession(ctx context.Context, dst string, opts 
 	}
 
 	dst = strings.TrimPrefix(dst, "/")
-	requestURL := client.getRequestURL("drive/root:/" + dst + ":/createUploadSession")
+	requestURL := client.getRequestURL("/drive/root:/" + dst + ":/createUploadSession")
 	body := map[string]map[string]interface{}{
 		"item": {
 			"@microsoft.graph.conflictBehavior": options.conflictBehavior,
@@ -397,7 +396,6 @@ func (client *Client) makeBatchDeleteRequestsBody(files []string) string {
 	req := BatchRequests{
 		Requests: make([]BatchRequest, len(files)),
 	}
-	//修复删除失败
 	var Delete_Full_URL string = client.Endpoints.EndpointURL + "/drive/root:/"
 	for i, v := range files {
 		v = strings.TrimPrefix(v, "/")

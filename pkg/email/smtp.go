@@ -1,9 +1,10 @@
 package email
 
 import (
-	"github.com/HFO4/cloudreve/pkg/util"
-	"github.com/go-mail/mail"
 	"time"
+        "crypto/tls"
+	"github.com/cloudreve/Cloudreve/v3/pkg/util"
+	"github.com/go-mail/mail"
 )
 
 // SMTP SMTP协议发送邮件
@@ -74,6 +75,7 @@ func (client *SMTP) Init() {
 		}()
 
 		d := mail.NewDialer(client.Config.Host, client.Config.Port, client.Config.User, client.Config.Password)
+		d.TLSConfig=&tls.Config{InsecureSkipVerify:true}
 		d.Timeout = time.Duration(client.Config.Keepalive+5) * time.Second
 		client.chOpen = true
 
